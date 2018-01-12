@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Android Architecure</string>
+
+    <string name="form_name_edit_text_hint">Name</string>
+    <string name="from_phone_edit_text_hint">Phone</string>
+    <string name="form_send_button_text">Send</string>
+    <string name="form_instructions">Fill out following form:</string>
+    <string name="form_version">Version: %1$s</string>
 </resources>

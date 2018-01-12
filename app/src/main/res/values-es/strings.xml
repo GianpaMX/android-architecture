@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="form_name_edit_text_hint">Nombre</string>
+    <string name="from_phone_edit_text_hint">Teléfono</string>
+    <string name="form_send_button_text">Enviar</string>
+    <string name="form_instructions">Ingresa los siguientes datos a continuación:</string>
+    <string name="form_version">Versión: %1$s</string>
+</resources>
