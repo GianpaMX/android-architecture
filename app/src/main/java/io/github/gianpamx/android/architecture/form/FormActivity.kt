@@ -1,4 +1,4 @@
-package io.github.gianpamx.android.architecture
+package io.github.gianpamx.android.architecture.form
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
