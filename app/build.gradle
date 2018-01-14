@@ -27,15 +27,27 @@ android {
 }
 
 dependencies {
-    kapt 'com.google.dagger:dagger-compiler:2.5'
-    implementation 'com.google.dagger:dagger:2.5'
+    def DAGGER_VERSION = '2.14.1'
+    def LIFE_CYCLE_VERSION = '1.0.0'
+
+    kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+    implementation "com.google.dagger:dagger:$DAGGER_VERSION"
+    implementation "com.google.dagger:dagger-android:$DAGGER_VERSION"
+    implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
+    kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$BUILD_TOOLS_VERSION"
     implementation "com.android.support:design:$BUILD_TOOLS_VERSION"
 
-    testImplementation 'junit:junit:4.12'
+    implementation "android.arch.lifecycle:extensions:$LIFE_CYCLE_VERSION"
+    annotationProcessor "android.arch.lifecycle:compiler:$LIFE_CYCLE_VERSION"
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    testImplementation "junit:junit:4.12"
+    testImplementation "android.arch.core:core-testing:$LIFE_CYCLE_VERSION"
+    testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
+
+    androidTestImplementation "com.android.support.test:runner:1.0.1"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+
 }

@@ -5,4 +5,5 @@
     <string name="form_send_button_text">Enviar</string>
     <string name="form_instructions">Ingresa los siguientes datos a continuación:</string>
     <string name="form_version">Versión: %1$s</string>
+    <string name="form_date_format">EEEE d \'de\' MMMM K:mm:ss a</string>
 </resources>
