@@ -10,8 +10,6 @@ import io.github.gianpamx.android.architecture.providers.DateTimeProvider
 class FormModule {
     @Provides
     fun provideFormViewModel(activity: FormActivity, dateTimeProvider: DateTimeProvider, factory: ViewModelProvider.Factory): FormViewModel {
-        val formViewModel = ViewModelProviders.of(activity, factory).get(FormViewModel::class.java)
-        formViewModel.dateTimeProvider = dateTimeProvider
-        return formViewModel
+        return ViewModelProviders.of(activity, factory).get(FormViewModel::class.java)
     }
 }

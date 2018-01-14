@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
 import dagger.android.AndroidInjection
-import io.github.gianpamx.androidarchitecure.R
+import io.github.gianpamx.androidarchitecture.R
 import kotlinx.android.synthetic.main.form_activity.*
 import javax.inject.Inject
 
@@ -19,6 +19,14 @@ class FormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.form_activity)
+
+        sendButton.setOnClickListener {
+            formViewModel.send(nameEditText.text.toString(), phoneEditText.text.toString())
+        }
+
+        formViewModel.isFormSaved.observe(this, Observer { isFormSaved ->
+            finish()
+        })
 
         formViewModel.dateTime.observe(this, Observer { date ->
             dateTimeTextView.text = DateFormat.format(getString(R.string.form_date_format), date)

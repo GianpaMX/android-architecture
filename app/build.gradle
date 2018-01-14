@@ -11,12 +11,12 @@ android {
     compileSdkVersion SDK_VERSION
     buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
-        applicationId "io.github.gianpamx.androidarchitecure"
+        applicationId "io.github.gianpamx.androidarchitecture"
         minSdkVersion 16
         targetSdkVersion SDK_VERSION
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "io.github.gianpamx.android.architecture.CustomTestRunner"
     }
     buildTypes {
         release {
@@ -47,7 +47,10 @@ dependencies {
     testImplementation "android.arch.core:core-testing:$LIFE_CYCLE_VERSION"
     testImplementation "com.nhaarman:mockito-kotlin:1.5.0"
 
+    androidTestImplementation 'org.mockito:mockito-android:2.13.0'
+    androidTestImplementation "com.nhaarman:mockito-kotlin:1.5.0"
     androidTestImplementation "com.android.support.test:runner:1.0.1"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
-
+    androidTestImplementation "android.arch.core:core-testing:1.0.0"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 }

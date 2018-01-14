@@ -1,0 +1,13 @@
+package io.github.gianpamx.android.architecture.usecase
+
+import dagger.Module
+import dagger.Provides
+import org.mockito.Mockito.mock
+
+@Module
+class TestUseCaseModule {
+    @Provides
+    fun provideSaveFormUseCase(): SaveFormUseCase {
+        return mock(SaveFormUseCase::class.java)
+    }
+}

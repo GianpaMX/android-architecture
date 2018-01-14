@@ -4,7 +4,7 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
-import io.github.gianpamx.android.architecture.usecase.UseCaseModule
+import io.github.gianpamx.android.architecture.usecase.TestUseCaseModule
 import javax.inject.Singleton
 
 
@@ -13,18 +13,18 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         AppModule::class,
         ActivitiesModule::class,
-        UseCaseModule::class
+        TestUseCaseModule::class
 ))
-interface AppComponent {
+interface TestAppComponent {
     @Component.Builder
     interface Builder {
 
         @BindsInstance
         fun application(application: Application): Builder
 
-        fun build(): AppComponent
+        fun build(): TestAppComponent
 
     }
 
-    fun inject(app: App)
+    fun inject(app: TestApp)
 }

@@ -7,22 +7,40 @@ import android.support.test.espresso.action.ViewActions.replaceText
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import io.github.gianpamx.androidarchitecure.R
+import com.nhaarman.mockito_kotlin.argumentCaptor
+import io.github.gianpamx.androidarchitecture.R
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.anyString
+import org.mockito.Mockito.verify
+import android.arch.core.executor.testing.InstantTaskExecutorRule
+
+
 
 @RunWith(AndroidJUnit4::class)
 class FormActivityTest {
 
     @Rule
     @JvmField
+    var instantExecutorRule = InstantTaskExecutorRule()
+
+    @Rule
+    @JvmField
     var activityTestRule = ActivityTestRule(FormActivity::class.java)
 
     @Test
-    fun formActivityTest() {
+    fun sendForm() {
+        val captor = argumentCaptor<() -> Unit>()
+
         onView(withId(R.id.nameEditText)).perform(replaceText("Juan"))
         onView(withId(R.id.phoneEditText)).perform(replaceText("5518911661"))
         onView(withId(R.id.sendButton)).perform(click())
+
+        verify(activityTestRule.activity.formViewModel.saveFormUseCase).execute(anyString(), anyString(), captor.capture())
+        captor.firstValue.invoke()
+
+        assertTrue(activityTestRule.getActivity().isFinishing())
     }
 }
