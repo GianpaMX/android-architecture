@@ -7,6 +7,7 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import io.github.gianpamx.android.architecture.entity.Form
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
+import io.github.gianpamx.android.architecture.providers.VersionProvider
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
 import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
 import junit.framework.Assert.assertEquals
@@ -36,12 +37,13 @@ class FormViewModelTest {
     val dateTimeProvider = mock<DateTimeProvider>()
     val saveFormUseCase = mock<SaveFormUseCase>()
     val getFormUseCase = mock<GetFormUseCase>()
+    val versionProvider = mock<VersionProvider>()
 
     lateinit var formViewModel: FormViewModel
 
     @Before
     fun setUp() {
-        formViewModel = FormViewModel(dateTimeProvider, saveFormUseCase, getFormUseCase)
+        formViewModel = FormViewModel(dateTimeProvider, saveFormUseCase, getFormUseCase, versionProvider)
     }
 
     @Test
@@ -73,7 +75,7 @@ class FormViewModelTest {
     fun existingFormData() {
         var captor = argumentCaptor<(Form) -> Unit>()
 
-        verify(getFormUseCase).execute(captor.capture(), any())
+        verify(getFormUseCase).execute(captor.capture())
         captor.firstValue.invoke(Form(ANY_NAME, ANY_PHONE))
 
         assertTrue(formViewModel.isFormSaved.value!!)
@@ -81,10 +83,7 @@ class FormViewModelTest {
 
     @Test
     fun formNotSaved() {
-        var captor = argumentCaptor<() -> Unit>()
-
-        verify(getFormUseCase).execute(any(), captor.capture())
-        captor.firstValue.invoke()
+        verify(getFormUseCase).execute(any())
 
         assertFalse(formViewModel.isFormSaved.value!!)
     }

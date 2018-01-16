@@ -1,9 +1,6 @@
 package io.github.gianpamx.android.architecture.data.room
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.times
-import com.nhaarman.mockito_kotlin.verify
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import io.github.gianpamx.android.architecture.entity.Form
 import org.junit.Before
 import org.junit.Test
@@ -39,21 +36,21 @@ class FormRepositoryTest {
 
     @Test
     fun findNotExistingForm() {
-        val success = mock<() -> Unit>()
+        val success = mock<(form: Form) -> Unit>()
         whenever(formDao.findForm()).thenReturn(null)
 
         formRepository.findFormSync(success)
 
-        verify(success, NoMoreInteractions()).invoke()
+        verify(success, NoMoreInteractions()).invoke(any())
     }
 
     @Test
     fun findExistingForm() {
-        val success = mock<() -> Unit>()
+        val success = mock<(form: Form) -> Unit>()
         whenever(formDao.findForm()).thenReturn(FormRoom(ANY_NAME, ANY_PHONE))
 
         formRepository.findFormSync(success)
 
-        verify(success, times(1)).invoke()
+        verify(success, times(1)).invoke(any())
     }
 }

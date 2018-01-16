@@ -8,7 +8,6 @@ import android.support.test.espresso.action.ViewActions.replaceText
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import io.github.gianpamx.android.architecture.entity.Form
 import io.github.gianpamx.androidarchitecture.R
@@ -54,7 +53,7 @@ class FormActivityTest {
     fun existingFormData() {
         val captor = argumentCaptor<(form: Form) -> Unit>()
 
-        verify(activityTestRule.activity.formViewModel.getFormUseCase).execute(captor.capture(), any())
+        verify(activityTestRule.activity.formViewModel.getFormUseCase).execute(captor.capture())
         captor.firstValue.invoke(Form(ANY_NAME, ANY_PHONE))
 
         assertTrue(activityTestRule.getActivity().isFinishing())
