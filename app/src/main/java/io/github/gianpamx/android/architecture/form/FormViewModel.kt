@@ -26,7 +26,7 @@ class FormViewModel : ViewModel, DateTimeProvider.Listener {
         isFormSaved.postValue(false)
         this.getFormUseCase.execute({ form ->
             isFormSaved.postValue(!form.name.isNullOrEmpty() && !form.phone.isNullOrEmpty())
-        }, {})
+        })
     }
 
     override fun onTick(date: Date) {

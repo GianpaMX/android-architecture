@@ -1,10 +1,12 @@
 package io.github.gianpamx.android.architecture.form
 
 import android.arch.lifecycle.Observer
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
 import dagger.android.AndroidInjection
+import io.github.gianpamx.android.architecture.gallery.GalleryActivity
 import io.github.gianpamx.androidarchitecture.R
 import kotlinx.android.synthetic.main.form_activity.*
 import javax.inject.Inject
@@ -27,6 +29,7 @@ class FormActivity : AppCompatActivity() {
         formViewModel.isFormSaved.observe(this, Observer { isFormSaved ->
             if (isFormSaved!!) {
                 finish()
+                startActivity(Intent(this, GalleryActivity::class.java))
             }
         })
 

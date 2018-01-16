@@ -4,7 +4,7 @@ import io.github.gianpamx.android.architecture.data.FormGateway
 import io.github.gianpamx.android.architecture.entity.Form
 
 class GetFormUseCaseImpl(val formGateway: FormGateway) : GetFormUseCase {
-    override fun execute(success: (form: Form) -> Unit, failure: () -> Unit) {
+    override fun execute(success: (form: Form) -> Unit) {
         formGateway.findForm(success)
     }
 }
