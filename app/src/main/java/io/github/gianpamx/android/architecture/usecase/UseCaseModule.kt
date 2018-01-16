@@ -11,4 +11,7 @@ class UseCaseModule {
 
     @Provides
     fun provideGetFormUseCase(formGateway: FormGateway): GetFormUseCase = GetFormUseCaseImpl(formGateway)
+
+    @Provides
+    fun provideGetImagesUseCase(): GetImagesUseCase = GetImagesUseCaseImpl()
 }

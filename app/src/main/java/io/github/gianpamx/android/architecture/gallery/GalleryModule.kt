@@ -11,4 +11,7 @@ class GalleryModule {
     fun provideFormViewModel(activity: GalleryActivity, factory: ViewModelProvider.Factory): GalleryViewModel {
         return ViewModelProviders.of(activity, factory).get(GalleryViewModel::class.java)
     }
+
+    @Provides
+    fun provideGalleryAdapter(activity: GalleryActivity): GalleryAdapter = GalleryAdapter(activity)
 }

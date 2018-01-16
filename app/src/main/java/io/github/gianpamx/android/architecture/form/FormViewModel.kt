@@ -13,9 +13,9 @@ class FormViewModel : ViewModel, DateTimeProvider.Listener {
     val saveFormUseCase: SaveFormUseCase
     val getFormUseCase: GetFormUseCase
 
-    val dateTime: MutableLiveData<Date> = MutableLiveData()
-    val isFormSaved: MutableLiveData<Boolean> = MutableLiveData()
-    val appVersion: MutableLiveData<String> = MutableLiveData()
+    val dateTime = MutableLiveData<Date>()
+    val isFormSaved = MutableLiveData<Boolean>()
+    val appVersion = MutableLiveData<String>()
 
     constructor(dateTimeProvider: DateTimeProvider,
                 saveFormUseCase: SaveFormUseCase,
