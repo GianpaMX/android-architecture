@@ -10,5 +10,5 @@ class UseCaseModule {
     fun provideSaveFormUseCase(formGateway: FormGateway): SaveFormUseCase = SaveFormUseCaseImpl(formGateway)
 
     @Provides
-    fun provideGetFormUseCase(): GetFormUseCase = GetFormUseCaseImpl()
+    fun provideGetFormUseCase(formGateway: FormGateway): GetFormUseCase = GetFormUseCaseImpl(formGateway)
 }
