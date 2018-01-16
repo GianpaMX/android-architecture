@@ -1,6 +1,8 @@
 package io.github.gianpamx.android.architecture.app
 
+import android.app.Application
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
 import dagger.Module
 import dagger.Provides
 import io.github.gianpamx.android.architecture.form.FormComponent
@@ -12,6 +14,10 @@ import javax.inject.Singleton
 
 @Module(subcomponents = arrayOf(FormComponent::class))
 class AppModule {
+    @Provides
+    @Singleton
+    fun provideContext(application: Application): Context = application
+
     @Provides
     @Singleton
     fun provideDateTimeProvider(): DateTimeProvider = AndroidDateTimeProvider()

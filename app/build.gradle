@@ -28,7 +28,7 @@ android {
 
 dependencies {
     def DAGGER_VERSION = '2.14.1'
-    def LIFE_CYCLE_VERSION = '1.0.0'
+    def ARCH_COMP_VERSION = '1.0.0'
     def MOCKITO_KOTLIN_VERSION = '1.5.0'
 
     kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
@@ -41,11 +41,16 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$BUILD_TOOLS_VERSION"
     implementation "com.android.support:design:$BUILD_TOOLS_VERSION"
 
-    implementation "android.arch.lifecycle:extensions:$LIFE_CYCLE_VERSION"
-    annotationProcessor "android.arch.lifecycle:compiler:$LIFE_CYCLE_VERSION"
+    implementation "android.arch.lifecycle:extensions:$ARCH_COMP_VERSION"
+    annotationProcessor "android.arch.lifecycle:compiler:$ARCH_COMP_VERSION"
+
+    implementation "android.arch.persistence.room:runtime:$ARCH_COMP_VERSION"
+    kapt "android.arch.persistence.room:compiler:$ARCH_COMP_VERSION"
+
 
     testImplementation "junit:junit:4.12"
-    testImplementation "android.arch.core:core-testing:$LIFE_CYCLE_VERSION"
+    testImplementation "android.arch.core:core-testing:$ARCH_COMP_VERSION"
+    testImplementation "android.arch.persistence.room:testing:$ARCH_COMP_VERSION"
     testImplementation "com.nhaarman:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
 
     androidTestImplementation 'org.mockito:mockito-android:2.13.0'

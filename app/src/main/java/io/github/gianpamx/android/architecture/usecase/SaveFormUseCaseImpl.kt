@@ -1,7 +1,10 @@
 package io.github.gianpamx.android.architecture.usecase
 
-class SaveFormUseCaseImpl : SaveFormUseCase {
+import io.github.gianpamx.android.architecture.data.FormGateway
+import io.github.gianpamx.android.architecture.entity.Form
+
+class SaveFormUseCaseImpl(val formGateway: FormGateway) : SaveFormUseCase {
     override fun execute(name: String, phone: String, success: () -> Unit) {
-        success()
+        formGateway.persist(Form(name, phone), success)
     }
 }

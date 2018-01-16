@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
+import io.github.gianpamx.android.architecture.data.room.RoomModule
 import io.github.gianpamx.android.architecture.usecase.UseCaseModule
 import javax.inject.Singleton
 
@@ -13,7 +14,8 @@ import javax.inject.Singleton
         AndroidInjectionModule::class,
         AppModule::class,
         ActivitiesModule::class,
-        UseCaseModule::class
+        UseCaseModule::class,
+        RoomModule::class
 ))
 interface AppComponent {
     @Component.Builder
