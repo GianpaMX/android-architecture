@@ -3,6 +3,7 @@ package io.github.gianpamx.android.architecture.usecase
 import dagger.Module
 import dagger.Provides
 import io.github.gianpamx.android.architecture.data.FormGateway
+import io.github.gianpamx.android.architecture.data.ImagesGateway
 
 @Module
 class UseCaseModule {
@@ -13,5 +14,5 @@ class UseCaseModule {
     fun provideGetFormUseCase(formGateway: FormGateway): GetFormUseCase = GetFormUseCaseImpl(formGateway)
 
     @Provides
-    fun provideGetImagesUseCase(): GetImagesUseCase = GetImagesUseCaseImpl()
+    fun provideGetImagesUseCase(imagesGateway: ImagesGateway): GetImagesUseCase = GetImagesUseCaseImpl(imagesGateway)
 }

@@ -15,4 +15,9 @@ class TestUseCaseModule {
     fun provideGetFormUseCase(): GetFormUseCase {
         return mock(GetFormUseCase::class.java)
     }
+
+    @Provides
+    fun provideGetImagesUseCase(): GetImagesUseCase {
+        return mock(GetImagesUseCase::class.java)
+    }
 }

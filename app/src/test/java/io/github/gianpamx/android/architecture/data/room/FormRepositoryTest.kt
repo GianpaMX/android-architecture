@@ -6,7 +6,6 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import org.mockito.internal.verification.NoMoreInteractions
 
 @RunWith(JUnit4::class)
 class FormRepositoryTest {
@@ -31,7 +30,7 @@ class FormRepositoryTest {
 
         formRepository.persistSync(Form(ANY_NAME, ANY_PHONE), success)
 
-        verify(success, times(1)).invoke()
+        verify(success, only()).invoke()
     }
 
     @Test
@@ -41,7 +40,7 @@ class FormRepositoryTest {
 
         formRepository.findFormSync(success)
 
-        verify(success, NoMoreInteractions()).invoke(any())
+        verifyZeroInteractions(success)
     }
 
     @Test

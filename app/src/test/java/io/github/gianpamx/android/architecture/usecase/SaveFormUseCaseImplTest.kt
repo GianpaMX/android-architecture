@@ -4,7 +4,10 @@ import com.nhaarman.mockito_kotlin.*
 import io.github.gianpamx.android.architecture.data.FormGateway
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.JUnit4
 
+@RunWith(JUnit4::class)
 class SaveFormUseCaseImplTest {
     val formGateway = mock<FormGateway>()
 
