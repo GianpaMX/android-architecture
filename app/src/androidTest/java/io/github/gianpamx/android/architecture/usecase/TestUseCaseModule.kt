@@ -10,4 +10,9 @@ class TestUseCaseModule {
     fun provideSaveFormUseCase(): SaveFormUseCase {
         return mock(SaveFormUseCase::class.java)
     }
+
+    @Provides
+    fun provideGetFormUseCase(): GetFormUseCase {
+        return mock(GetFormUseCase::class.java)
+    }
 }

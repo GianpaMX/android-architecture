@@ -25,7 +25,9 @@ class FormActivity : AppCompatActivity() {
         }
 
         formViewModel.isFormSaved.observe(this, Observer { isFormSaved ->
-            finish()
+            if (isFormSaved!!) {
+                finish()
+            }
         })
 
         formViewModel.dateTime.observe(this, Observer { date ->

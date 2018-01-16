@@ -7,4 +7,7 @@ import dagger.Provides
 class UseCaseModule {
     @Provides
     fun provideSaveFormUseCase(): SaveFormUseCase = SaveFormUseCaseImpl()
+
+    @Provides
+    fun provideGetFormUseCase(): GetFormUseCase = GetFormUseCaseImpl()
 }

@@ -3,30 +3,39 @@ package io.github.gianpamx.android.architecture.form
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
+import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
 import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
 import java.util.*
 
 class FormViewModel : ViewModel, DateTimeProvider.Listener {
     val dateTimeProvider: DateTimeProvider
     val saveFormUseCase: SaveFormUseCase
+    val getFormUseCase: GetFormUseCase
 
-    var dateTime: MutableLiveData<Date> = MutableLiveData()
-    var isFormSaved: MutableLiveData<Boolean> = MutableLiveData()
+    val dateTime: MutableLiveData<Date> = MutableLiveData()
 
-    constructor(dateTimeProvider: DateTimeProvider, saveFormUseCase: SaveFormUseCase) {
+    val isFormSaved: MutableLiveData<Boolean> = MutableLiveData()
+
+    constructor(dateTimeProvider: DateTimeProvider, saveFormUseCase: SaveFormUseCase, getFormUseCase: GetFormUseCase) {
         this.dateTimeProvider = dateTimeProvider
         this.dateTimeProvider.start(this)
 
         this.saveFormUseCase = saveFormUseCase
+        this.getFormUseCase = getFormUseCase
+
+        isFormSaved.postValue(false)
+        this.getFormUseCase.execute({ form ->
+            isFormSaved.postValue(!form.name.isNullOrEmpty() && !form.phone.isNullOrEmpty())
+        }, {})
     }
 
     override fun onTick(date: Date) {
-        dateTime.value = date
+        dateTime.postValue(date)
     }
 
     fun send(name: String, phone: String) {
         saveFormUseCase.execute(name, phone, {
-            isFormSaved.value = true
+            isFormSaved.postValue(true)
         })
     }
 }
