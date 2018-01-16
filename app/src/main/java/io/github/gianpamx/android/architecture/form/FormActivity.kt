@@ -36,5 +36,9 @@ class FormActivity : AppCompatActivity() {
         formViewModel.dateTime.observe(this, Observer { date ->
             dateTimeTextView.text = DateFormat.format(getString(R.string.form_date_format), date)
         })
+
+        formViewModel.appVersion.observe(this, Observer { appVersion ->
+            versionTextView.text = getString(R.string.form_version, appVersion)
+        })
     }
 }

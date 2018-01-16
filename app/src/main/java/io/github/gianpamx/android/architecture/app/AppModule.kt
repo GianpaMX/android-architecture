@@ -7,7 +7,9 @@ import dagger.Module
 import dagger.Provides
 import io.github.gianpamx.android.architecture.form.FormComponent
 import io.github.gianpamx.android.architecture.providers.AndroidDateTimeProvider
+import io.github.gianpamx.android.architecture.providers.AppVersionProvider
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
+import io.github.gianpamx.android.architecture.providers.VersionProvider
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
 import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
 import javax.inject.Singleton
@@ -24,7 +26,14 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideViewModelFactory(dateTimeProvider: DateTimeProvider, saveFormUseCase: SaveFormUseCase, getFormUseCase: GetFormUseCase): ViewModelProvider.Factory {
-        return ViewModelFactory(dateTimeProvider, saveFormUseCase, getFormUseCase)
+    fun provideViewModelFactory(dateTimeProvider: DateTimeProvider,
+                                saveFormUseCase: SaveFormUseCase,
+                                getFormUseCase: GetFormUseCase,
+                                versionProvider: VersionProvider): ViewModelProvider.Factory {
+        return ViewModelFactory(dateTimeProvider, saveFormUseCase, getFormUseCase, versionProvider)
     }
+
+    @Provides
+    @Singleton
+    fun provideVersionProvider(context: Context): VersionProvider = AppVersionProvider(context)
 }
