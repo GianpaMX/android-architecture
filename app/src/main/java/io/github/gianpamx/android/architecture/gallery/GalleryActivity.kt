@@ -23,6 +23,8 @@ class GalleryActivity : AppCompatActivity() {
 
         setContentView(R.layout.gallery_activity)
 
+        galleryRecyclerView.setHasFixedSize(true)
+        galleryRecyclerView.isDrawingCacheEnabled = true;
         galleryRecyclerView.layoutManager = GridLayoutManager(this, 3)
         galleryRecyclerView.adapter = galleryAdapter
 

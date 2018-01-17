@@ -8,8 +8,15 @@ import android.widget.ImageView
 import com.bumptech.glide.Glide
 import io.github.gianpamx.androidarchitecture.R
 
-class GalleryAdapter(val context: Context) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
-    private val images = ArrayList<String>()
+class GalleryAdapter : RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
+    private val images: ArrayList<String>
+    private val context: Context
+
+    constructor(context: Context) : super() {
+        this.context = context
+        this.images = ArrayList<String>()
+        setHasStableIds(true)
+    }
 
     fun replaceImages(images: List<String>) {
         this.images.clear()
@@ -25,6 +32,10 @@ class GalleryAdapter(val context: Context) : RecyclerView.Adapter<GalleryAdapter
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent?.context).inflate(R.layout.gallery_item, parent, false) as ImageView)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
     }
 
     inner class ViewHolder(val imageView: ImageView) : RecyclerView.ViewHolder(imageView) {
