@@ -10,7 +10,7 @@ jdk:
 before_install:
   - sdkmanager --list
   - echo yes | sdkmanager "tools" &>/dev/null
-  - sdkmanager "system-images;android-26;google_apis;x86_64"
+  - echo yes | sdkmanager "system-images;android-26;google_apis;x86_64"
   - echo no | avdmanager create avd --force -n test -k "system-images;android-26;google_apis;x86_64"
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
