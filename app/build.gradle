@@ -91,9 +91,11 @@ task fullCoverageReport(type: JacocoReport) {
                       '**/*_MembersInjector.class',
                       '**/Dagger*Component.class',
                       '**/Dagger*Component$Builder.class',
+                      '**/DaggerApp*',
                       '**/*_*Factory.class',
                       '**/*ComponentImpl.class',
-                      '**/*SubComponentBuilder.class']
+                      '**/*SubComponentBuilder.class',
+                      '**/*_Impl*']
     def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
     def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
