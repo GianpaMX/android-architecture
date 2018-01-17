@@ -25,7 +25,7 @@ class GalleryActivity : AppCompatActivity() {
 
         galleryRecyclerView.setHasFixedSize(true)
         galleryRecyclerView.isDrawingCacheEnabled = true;
-        galleryRecyclerView.layoutManager = GridLayoutManager(this, 3)
+        galleryRecyclerView.layoutManager = GridLayoutManager(this, resources.getInteger(R.integer.gallery_span_count))
         galleryRecyclerView.adapter = galleryAdapter
 
         galleryViewModel.name.observe(this, Observer { name ->
