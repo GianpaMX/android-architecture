@@ -44,7 +44,7 @@ dependencies {
     implementation "com.android.support:design:$BUILD_TOOLS_VERSION"
 
     implementation "android.arch.lifecycle:extensions:$ARCH_COMP_VERSION"
-    annotationProcessor "android.arch.lifecycle:compiler:$ARCH_COMP_VERSION"
+    kapt "android.arch.lifecycle:compiler:$ARCH_COMP_VERSION"
 
     implementation "android.arch.persistence.room:runtime:$ARCH_COMP_VERSION"
     kapt "android.arch.persistence.room:compiler:$ARCH_COMP_VERSION"
