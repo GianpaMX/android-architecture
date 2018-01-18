@@ -58,6 +58,15 @@ class FormViewModelTest {
         assertEquals(SECOND_DATE, formViewModel.dateTime.value);
     }
 
+    @Test
+    fun sendEmpty() {
+        assertFalse(formViewModel.isEmpty.value!!)
+
+        formViewModel.send("", "")
+
+        assertTrue(formViewModel.isEmpty.value!!)
+    }
+
 
     @Test
     fun send() {

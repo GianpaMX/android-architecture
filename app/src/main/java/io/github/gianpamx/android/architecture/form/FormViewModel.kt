@@ -16,6 +16,7 @@ class FormViewModel : ViewModel, DateTimeProvider.Listener {
     val dateTime = MutableLiveData<Date>()
     val isFormSaved = MutableLiveData<Boolean>()
     val appVersion = MutableLiveData<String>()
+    val isEmpty = MutableLiveData<Boolean>()
 
     constructor(dateTimeProvider: DateTimeProvider,
                 saveFormUseCase: SaveFormUseCase,
@@ -29,9 +30,11 @@ class FormViewModel : ViewModel, DateTimeProvider.Listener {
 
         appVersion.postValue(versionProvider.getVersion())
 
+        isEmpty.postValue(false)
+
         isFormSaved.postValue(false)
         this.getFormUseCase.execute({ form ->
-            isFormSaved.postValue(!form.name.isNullOrEmpty() && !form.phone.isNullOrEmpty())
+            isFormSaved.postValue(!isEmpty(form.name, form.phone))
         })
     }
 
@@ -40,8 +43,17 @@ class FormViewModel : ViewModel, DateTimeProvider.Listener {
     }
 
     fun send(name: String, phone: String) {
+        isEmpty.postValue(false)
+        if (isEmpty(name, phone)) {
+            isEmpty.postValue(true)
+            return
+        }
+
         saveFormUseCase.execute(name, phone, {
             isFormSaved.postValue(true)
         })
     }
+
+    private fun isEmpty(name: String?, phone: String?) =
+            name?.isNullOrEmpty()!! || phone?.isNullOrEmpty()!!
 }

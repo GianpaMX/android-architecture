@@ -40,5 +40,9 @@ class FormActivity : AppCompatActivity() {
         formViewModel.appVersion.observe(this, Observer { appVersion ->
             versionTextView.text = getString(R.string.form_version, appVersion)
         })
+
+        formViewModel.isEmpty.observe(this, Observer { isEmpty ->
+            nameEditText.setError(if (isEmpty!!) getString(R.string.form_empty_error) else null)
+        })
     }
 }
