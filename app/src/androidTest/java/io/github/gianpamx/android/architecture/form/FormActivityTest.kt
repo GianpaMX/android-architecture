@@ -3,8 +3,7 @@ package io.github.gianpamx.android.architecture.form
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.click
-import android.support.test.espresso.action.ViewActions.replaceText
+import android.support.test.espresso.action.ViewActions.*
 import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
@@ -39,9 +38,9 @@ class FormActivityTest {
     fun sendForm() {
         val captor = argumentCaptor<() -> Unit>()
 
-        onView(withId(R.id.nameEditText)).perform(replaceText(ANY_NAME))
-        onView(withId(R.id.phoneEditText)).perform(replaceText(ANY_PHONE))
-        onView(withId(R.id.sendButton)).perform(click())
+        onView(withId(R.id.nameEditText)).perform(scrollTo()).perform(replaceText(ANY_NAME))
+        onView(withId(R.id.phoneEditText)).perform(scrollTo()).perform(replaceText(ANY_PHONE))
+        onView(withId(R.id.sendButton)).perform(scrollTo()).perform(click())
 
         verify(activityTestRule.activity.formViewModel.saveFormUseCase).execute(anyString(), anyString(), captor.capture())
         captor.firstValue.invoke()
