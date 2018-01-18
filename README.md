@@ -4,7 +4,7 @@ Android Architecture
 This is a project to show how to separate an app into several layers. Following
 [Uncle Bob Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html).
 
-![alt Clean Architecture](https://herbertograca.files.wordpress.com/2017/04/cleanarchitecturedesign.png "Clean Architecture")
+![alt Android Clean Architecture](docs/android-clean-architecture.png "Android Clean Architecture")
 
 All App code is in
 [app/src/main/java/io/github/gianpamx/android/architecture](app/src/main/java/io/github/gianpamx/android/architecture)
