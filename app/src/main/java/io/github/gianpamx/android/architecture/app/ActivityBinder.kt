@@ -9,7 +9,7 @@ import io.github.gianpamx.android.architecture.gallery.GalleryModule
 
 
 @Module
-abstract class ActivitiesModule {
+abstract class ActivityBinder {
     @ContributesAndroidInjector(modules = arrayOf(FormModule::class))
     abstract fun bindFormActivity(): FormActivity
 

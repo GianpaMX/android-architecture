@@ -2,31 +2,27 @@ package io.github.gianpamx.android.architecture.form
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.arch.lifecycle.ViewModelProvider
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
 import io.github.gianpamx.android.architecture.providers.VersionProvider
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
 import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
 import java.util.*
 
-class FormViewModel : ViewModel, DateTimeProvider.Listener {
-    val dateTimeProvider: DateTimeProvider
-    val saveFormUseCase: SaveFormUseCase
-    val getFormUseCase: GetFormUseCase
+class FormViewModel(
+        val dateTimeProvider: DateTimeProvider,
+        val saveFormUseCase: SaveFormUseCase,
+        val getFormUseCase: GetFormUseCase,
+        versionProvider: VersionProvider
+) : ViewModel(), DateTimeProvider.Listener {
 
     val dateTime = MutableLiveData<Date>()
     val isFormSaved = MutableLiveData<Boolean>()
     val appVersion = MutableLiveData<String>()
     val isEmpty = MutableLiveData<Boolean>()
 
-    constructor(dateTimeProvider: DateTimeProvider,
-                saveFormUseCase: SaveFormUseCase,
-                getFormUseCase: GetFormUseCase,
-                versionProvider: VersionProvider) {
-        this.dateTimeProvider = dateTimeProvider
+    init {
         this.dateTimeProvider.start(this)
-
-        this.saveFormUseCase = saveFormUseCase
-        this.getFormUseCase = getFormUseCase
 
         appVersion.postValue(versionProvider.getVersion())
 
@@ -56,4 +52,13 @@ class FormViewModel : ViewModel, DateTimeProvider.Listener {
 
     private fun isEmpty(name: String?, phone: String?) =
             name?.isNullOrEmpty()!! || phone?.isNullOrEmpty()!!
+
+    class Factory(
+            private val dateTimeProvider: DateTimeProvider,
+            private val saveFormUseCase: SaveFormUseCase,
+            private val getFormUseCase: GetFormUseCase,
+            private val versionProvider: VersionProvider) : ViewModelProvider.Factory {
+        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
+                FormViewModel(dateTimeProvider, saveFormUseCase, getFormUseCase, versionProvider) as T
+    }
 }
