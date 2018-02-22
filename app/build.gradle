@@ -75,6 +75,10 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:1.0.1"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
     androidTestImplementation "android.arch.core:core-testing:1.0.0"
+    androidTestImplementation('com.schibsted.spain:barista:2.3.0') {
+        exclude group: 'com.android.support'
+        exclude group: 'org.jetbrains.kotlin'
+    }
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 }
 

@@ -1,6 +1,5 @@
 package io.github.gianpamx.android.architecture.form
 
-import android.arch.lifecycle.ViewModelProvider
 import android.arch.lifecycle.ViewModelProviders
 import dagger.Module
 import dagger.Provides

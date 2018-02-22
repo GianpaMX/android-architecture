@@ -2,13 +2,12 @@ package io.github.gianpamx.android.architecture.form
 
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.support.test.espresso.Espresso.onView
-import android.support.test.espresso.action.ViewActions.*
-import android.support.test.espresso.matcher.ViewMatchers.withId
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
+import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
+import com.schibsted.spain.barista.interaction.BaristaEditTextInteractions.writeTo
 import io.github.gianpamx.android.architecture.app.TestApp
 import io.github.gianpamx.android.architecture.data.FormGateway
 import io.github.gianpamx.android.architecture.entity.Form
@@ -60,9 +59,9 @@ class FormActivityTest {
     fun sendForm() {
         val captor = argumentCaptor<() -> Unit>()
 
-        onView(withId(R.id.nameEditText)).perform(scrollTo()).perform(replaceText(ANY_NAME))
-        onView(withId(R.id.phoneEditText)).perform(scrollTo()).perform(replaceText(ANY_PHONE))
-        onView(withId(R.id.sendButton)).perform(scrollTo()).perform(click())
+        writeTo(R.id.nameEditText, ANY_NAME)
+        writeTo(R.id.phoneEditText, ANY_PHONE)
+        clickOn(R.id.sendButton)
 
         verify(formGateway).persist(any(), captor.capture())
         captor.firstValue.invoke()
