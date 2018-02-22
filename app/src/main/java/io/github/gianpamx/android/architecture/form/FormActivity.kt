@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
 import dagger.android.AndroidInjection
+import io.github.gianpamx.android.architecture.entity.EmptyNameExeption
+import io.github.gianpamx.android.architecture.entity.EmptyPhoneExeption
 import io.github.gianpamx.android.architecture.gallery.GalleryActivity
 import io.github.gianpamx.androidarchitecture.R
 import kotlinx.android.synthetic.main.form_activity.*
@@ -41,8 +43,14 @@ class FormActivity : AppCompatActivity() {
             versionTextView.text = getString(R.string.form_version, appVersion)
         })
 
-        formViewModel.isEmpty.observe(this, Observer { isEmpty ->
-            nameEditText.setError(if (isEmpty!!) getString(R.string.form_empty_error) else null)
+        formViewModel.error.observe(this, Observer {
+            if (it is EmptyNameExeption) {
+                nameEditText.error = getString(R.string.form_empty_error)
+            }
+
+            if (it is EmptyPhoneExeption) {
+                phoneEditText.error = getString(R.string.form_empty_error)
+            }
         })
     }
 }

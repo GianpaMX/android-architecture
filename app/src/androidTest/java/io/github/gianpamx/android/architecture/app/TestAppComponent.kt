@@ -4,7 +4,11 @@ import android.app.Application
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjectionModule
-import io.github.gianpamx.android.architecture.usecase.TestUseCaseModule
+import io.github.gianpamx.android.architecture.data.MockModule
+import io.github.gianpamx.android.architecture.data.retrofit.RetrofitModule
+import io.github.gianpamx.android.architecture.data.room.RoomModule
+import io.github.gianpamx.android.architecture.form.FormActivityTest
+import io.github.gianpamx.android.architecture.usecase.UseCaseModule
 import javax.inject.Singleton
 
 
@@ -13,7 +17,9 @@ import javax.inject.Singleton
 AndroidInjectionModule::class,
 AppModule::class,
 ActivityBinder::class,
-TestUseCaseModule::class])
+UseCaseModule::class,
+MockModule::class
+])
 interface TestAppComponent {
     @Component.Builder
     interface Builder {
@@ -26,4 +32,6 @@ interface TestAppComponent {
     }
 
     fun inject(app: TestApp)
+
+    fun inject(formActivityTest: FormActivityTest)
 }

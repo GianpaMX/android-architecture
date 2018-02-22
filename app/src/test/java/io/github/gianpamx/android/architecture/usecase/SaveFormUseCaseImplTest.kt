@@ -23,7 +23,7 @@ class SaveFormUseCaseImplTest {
         val callback = mock<() -> Unit>()
         var captor = argumentCaptor<() -> Unit>()
 
-        saveFormUseCase.execute("ANY_NAME", "ANY_PHONE", callback)
+        saveFormUseCase.execute("ANY_NAME", "ANY_PHONE", callback, mock())
 
         verify(formGateway).persist(any(), captor.capture())
         captor.firstValue.invoke()

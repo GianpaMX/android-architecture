@@ -7,7 +7,7 @@
     <string name="form_instructions">Fill out following form:</string>
     <string name="form_version">Version: %1$s</string>
     <string name="form_date_format">EEEE, d MMM yyyy K:mm:ss a</string>
-    <string name="form_empty_error">Empty</string>
+    <string name="form_empty_error">This shouldn\'t be empty</string>
 
     <string name="gallery_greeting">Hello %1$s:</string>
 </resources>

@@ -12,12 +12,16 @@ class TestApp : Application(), HasActivityInjector {
     @JvmField
     var dispatchingActivityInjector: DispatchingAndroidInjector<Activity>? = null
 
+    lateinit var testAppComponent: TestAppComponent
+
     override fun onCreate() {
         super.onCreate()
-        DaggerTestAppComponent.builder()
+
+        testAppComponent = DaggerTestAppComponent.builder()
                 .application(this)
                 .build()
-                .inject(this);
+
+        testAppComponent.inject(this)
     }
 
     override fun activityInjector(): AndroidInjector<Activity> {

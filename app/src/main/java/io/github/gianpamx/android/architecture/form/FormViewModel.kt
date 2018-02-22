@@ -3,6 +3,7 @@ package io.github.gianpamx.android.architecture.form
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.text.TextUtils.isEmpty
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
 import io.github.gianpamx.android.architecture.providers.VersionProvider
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
@@ -19,18 +20,16 @@ class FormViewModel(
     val dateTime = MutableLiveData<Date>()
     val isFormSaved = MutableLiveData<Boolean>()
     val appVersion = MutableLiveData<String>()
-    val isEmpty = MutableLiveData<Boolean>()
+    val error = MutableLiveData<Throwable>()
 
     init {
         this.dateTimeProvider.start(this)
 
         appVersion.postValue(versionProvider.getVersion())
 
-        isEmpty.postValue(false)
-
         isFormSaved.postValue(false)
         this.getFormUseCase.execute({ form ->
-            isFormSaved.postValue(!isEmpty(form.name, form.phone))
+            isFormSaved.postValue(true)
         })
     }
 
@@ -38,20 +37,13 @@ class FormViewModel(
         dateTime.postValue(date)
     }
 
-    fun send(name: String, phone: String) {
-        isEmpty.postValue(false)
-        if (isEmpty(name, phone)) {
-            isEmpty.postValue(true)
-            return
-        }
-
+    fun send(name: String?, phone: String?) {
         saveFormUseCase.execute(name, phone, {
             isFormSaved.postValue(true)
+        }, {
+            error.postValue(it)
         })
     }
-
-    private fun isEmpty(name: String?, phone: String?) =
-            name?.isNullOrEmpty()!! || phone?.isNullOrEmpty()!!
 
     class Factory(
             private val dateTimeProvider: DateTimeProvider,

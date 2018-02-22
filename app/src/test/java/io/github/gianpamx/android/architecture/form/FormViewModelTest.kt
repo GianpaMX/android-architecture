@@ -5,6 +5,8 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
+import io.github.gianpamx.android.architecture.entity.EmptyNameExeption
+import io.github.gianpamx.android.architecture.entity.EmptyPhoneExeption
 import io.github.gianpamx.android.architecture.entity.Form
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
 import io.github.gianpamx.android.architecture.providers.VersionProvider
@@ -18,6 +20,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers.anyString
 import java.util.*
 
 
@@ -59,22 +62,23 @@ class FormViewModelTest {
     }
 
     @Test
-    fun sendEmpty() {
-        assertFalse(formViewModel.isEmpty.value!!)
+    fun sendFailure() {
+        val captor = argumentCaptor<(Throwable) -> Unit>()
 
-        formViewModel.send("", "")
+        formViewModel.send("ANY_STRING", "ANY_STRING")
 
-        assertTrue(formViewModel.isEmpty.value!!)
+        verify(saveFormUseCase).execute(anyString(), anyString(), any(), captor.capture())
+        captor.firstValue.invoke(Exception())
+        assertTrue(formViewModel.error.value is Exception)
     }
 
-
     @Test
-    fun send() {
+    fun sendSuccessfully() {
         val captor = argumentCaptor<() -> Unit>()
 
         formViewModel.send(ANY_NAME, ANY_PHONE)
 
-        verify(saveFormUseCase).execute(any(), any(), captor.capture())
+        verify(saveFormUseCase).execute(anyString(), anyString(), captor.capture(), any())
         captor.firstValue.invoke()
 
         assertTrue(formViewModel.isFormSaved.value!!)
