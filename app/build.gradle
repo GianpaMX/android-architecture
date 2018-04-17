@@ -32,6 +32,10 @@ jacoco {
     toolVersion = "0.8.1"
 }
 
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
+}
+
 dependencies {
     def DAGGER_VERSION = '2.14.1'
     def ARCH_COMP_VERSION = '1.1.1'
@@ -86,24 +90,40 @@ dependencies {
     kaptAndroidTest "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
 }
 
-task fullCoverageReport(type: JacocoReport) {
-    dependsOn 'createDebugCoverageReport'
-    dependsOn 'testDebugUnitTest'
+task fullCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {
     reports {
         xml.enabled = true
         html.enabled = true
     }
 
-    def fileFilter = ['**/R.class', '**/R$*.class', '**/BuildConfig.*', '**/Manifest*.*',
-                      '**/*Test*.*', 'android/**/*.*',
-                      '**/*_MembersInjector.class',
-                      '**/Dagger*Component.class',
-                      '**/Dagger*Component$Builder.class',
-                      '**/DaggerApp*',
-                      '**/*_*Factory.class',
-                      '**/*ComponentImpl.class',
-                      '**/*SubComponentBuilder.class',
-                      '**/*_Impl*']
+    def fileFilter = [
+            '**/*Test*.*',
+            '**/AutoValue_*.*',
+            '**/*JavascriptBridge.class',
+            '**/R.class',
+            '**/R$*.class',
+            '**/Manifest*.*',
+            'android/**/*.*',
+            '**/BuildConfig.*',
+            '**/*$ViewBinder*.*',
+            '**/*$ViewInjector*.*',
+            '**/Lambda$*.class',
+            '**/Lambda.class',
+            '**/*Lambda.class',
+            '**/*Lambda*.class',
+            '**/*$InjectAdapter.class',
+            '**/*$ModuleAdapter.class',
+            '**/*$ViewInjector*.class',
+            '**/*_Impl*',
+            '**/Dagger*Component*',
+            '**/Dagger*Impl*',
+            '**/Dagger*Builder*',
+            '**/*_MembersInjector.class', //Dagger2 generated code
+            '*/*_MembersInjector*.*', //Dagger2 generated code
+            '**/*_*Factory*.*', //Dagger2 generated code
+            '*/*Component*.*', //Dagger2 generated code
+            '**/*Module*.*' //Dagger2 generated code
+    ]
     def debugTree = fileTree(dir: "${buildDir}/intermediates/classes/debug", excludes: fileFilter)
     def kotlinDebugTree = fileTree(dir: "${buildDir}/tmp/kotlin-classes/debug", excludes: fileFilter)
     def mainSrc = "${project.projectDir}/src/main/java"
@@ -111,7 +131,7 @@ task fullCoverageReport(type: JacocoReport) {
     sourceDirectories = files([mainSrc])
     classDirectories = files([debugTree, kotlinDebugTree])
     executionData = fileTree(dir: "$buildDir", includes: [
-            "jacoco/testDebugUnitTest.exec",
-            "outputs/code-coverage/connected/*coverage.ec"
+            "outputs/code-coverage/connected/*coverage.ec",
+            "jacoco/testDebugUnitTest.exec"
     ])
 }
