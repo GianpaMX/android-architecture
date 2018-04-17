@@ -1,6 +1,9 @@
 Android Architecture
 ====================
 
+[![Build Status](https://travis-ci.org/GianpaMX/android-architecture.svg?branch=master)](https://travis-ci.org/GianpaMX/android-architecture)
+[![codecov](https://codecov.io/gh/GianpaMX/android-architecture/branch/master/graph/badge.svg)](https://codecov.io/gh/GianpaMX/android-architecture)
+
 This is a project to show how to separate an app into several layers. Following
 [Uncle Bob Clean Architecture](https://8thlight.com/blog/uncle-bob/2012/08/13/the-clean-architecture.html).
 
