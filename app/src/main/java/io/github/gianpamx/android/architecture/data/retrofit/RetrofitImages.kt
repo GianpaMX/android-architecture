@@ -4,10 +4,6 @@ import io.github.gianpamx.android.architecture.data.ImagesGateway
 import io.github.gianpamx.android.architecture.entity.ApiException
 
 class RetrofitImages(val imgurService: ImgurService) : ImagesGateway {
-    companion object {
-        val TAG = "RetrofitImages"
-    }
-
     override fun getAlbum(albumHash: String): List<String> {
         val call = imgurService.album(albumHash)
         val response = call.execute()
