@@ -2,15 +2,15 @@ package io.github.gianpamx.android.architecture.form
 
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
+import android.content.Intent
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.argumentCaptor
+import com.nhaarman.mockito_kotlin.whenever
 import com.schibsted.spain.barista.interaction.BaristaClickInteractions.clickOn
 import com.schibsted.spain.barista.interaction.BaristaEditTextInteractions.writeTo
 import io.github.gianpamx.android.architecture.app.TestApp
-import io.github.gianpamx.android.architecture.data.FormGateway
-import io.github.gianpamx.android.architecture.entity.Form
+import io.github.gianpamx.android.architecture.data.room.FormDao
+import io.github.gianpamx.android.architecture.data.room.FormRoom
 import io.github.gianpamx.androidarchitecture.R
 import org.junit.After
 import org.junit.Assert.assertFalse
@@ -20,7 +20,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
-import org.mockito.Mockito.verify
 import javax.inject.Inject
 
 
@@ -41,7 +40,7 @@ class FormActivityTest {
     var activityTestRule = ActivityTestRule(FormActivity::class.java)
 
     @Inject
-    lateinit var formGateway: FormGateway
+    lateinit var formDao: FormDao
 
     @Before
     fun setUp() {
@@ -49,37 +48,37 @@ class FormActivityTest {
         testApp.testAppComponent.inject(this)
     }
 
-
     @After
     fun tearDown() {
-        Mockito.reset(formGateway)
+        Mockito.reset(formDao)
     }
 
     @Test
     fun sendForm() {
-        val captor = argumentCaptor<() -> Unit>()
+        activityTestRule.launchActivity(Intent())
 
         writeTo(R.id.nameEditText, ANY_NAME)
         writeTo(R.id.phoneEditText, ANY_PHONE)
         clickOn(R.id.sendButton)
-
-        verify(formGateway).persist(any(), captor.capture())
-        captor.firstValue.invoke()
 
         assertTrue(activityTestRule.activity.isFinishing)
     }
 
     @Test
     fun existingFormData() {
-        val captor = argumentCaptor<(Form) -> Unit>()
+        whenever(formDao.findForm()).thenReturn(FormRoom(ANY_NAME, ANY_PHONE))
 
-        verify(formGateway).findForm(captor.capture())
-        captor.firstValue.invoke(Form(ANY_NAME, ANY_PHONE))
+        activityTestRule.launchActivity(Intent())
+
         assertTrue(activityTestRule.activity.isFinishing)
     }
 
     @Test
     fun noExistingFormData() {
+        whenever(formDao.findForm()).thenReturn(null)
+
+        activityTestRule.launchActivity(Intent())
+
         assertFalse(activityTestRule.activity.isFinishing)
     }
 }

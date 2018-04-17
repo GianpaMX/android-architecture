@@ -10,9 +10,9 @@ import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
 import java.util.*
 
 class FormViewModel(
-        val dateTimeProvider: DateTimeProvider,
-        val saveFormUseCase: SaveFormUseCase,
-        val getFormUseCase: GetFormUseCase,
+        dateTimeProvider: DateTimeProvider,
+        private val saveFormUseCase: SaveFormUseCase,
+        private val getFormUseCase: GetFormUseCase,
         versionProvider: VersionProvider
 ) : ViewModel(), DateTimeProvider.Listener {
 
@@ -22,12 +22,12 @@ class FormViewModel(
     val error = MutableLiveData<Throwable>()
 
     init {
-        this.dateTimeProvider.start(this)
+        dateTimeProvider.start(this)
 
         appVersion.postValue(versionProvider.getVersion())
 
         isFormSaved.postValue(false)
-        this.getFormUseCase.execute({ form ->
+        this.getFormUseCase.execute({
             isFormSaved.postValue(true)
         })
     }
@@ -37,13 +37,13 @@ class FormViewModel(
     }
 
     fun send(name: String?, phone: String?) {
-        saveFormUseCase.execute(name, phone, {
-            isFormSaved.postValue(true)
-        }, {
-            error.postValue(it)
-        })
+        saveFormUseCase.execute(name, phone,
+                success = { isFormSaved.postValue(true) },
+                failure = { error.postValue(it) }
+        )
     }
 
+    @Suppress("UNCHECKED_CAST")
     class Factory(
             private val dateTimeProvider: DateTimeProvider,
             private val saveFormUseCase: SaveFormUseCase,

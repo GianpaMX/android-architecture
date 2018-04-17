@@ -14,7 +14,6 @@ class GalleryActivity : AppCompatActivity() {
     @Inject
     lateinit var galleryViewModel: GalleryViewModel
 
-    @Inject
     lateinit var galleryAdapter: GalleryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -23,17 +22,25 @@ class GalleryActivity : AppCompatActivity() {
 
         setContentView(R.layout.gallery_activity)
 
+        galleryAdapter = GalleryAdapter(this)
+        configureRecyclerView()
+
+        galleryViewModel.name.observe(this, nameObserver)
+        galleryViewModel.images.observe(this, imagesObserver)
+    }
+
+    private fun configureRecyclerView() {
         galleryRecyclerView.setHasFixedSize(true)
         galleryRecyclerView.isDrawingCacheEnabled = true;
         galleryRecyclerView.layoutManager = GridLayoutManager(this, resources.getInteger(R.integer.gallery_span_count))
         galleryRecyclerView.adapter = galleryAdapter
+    }
 
-        galleryViewModel.name.observe(this, Observer { name ->
-            greetingEditText.text = getString(R.string.gallery_greeting, name)
-        })
+    private val nameObserver = Observer<String> {
+        greetingEditText.text = getString(R.string.gallery_greeting, it)
+    }
 
-        galleryViewModel.images.observe(this, Observer { images ->
-            galleryAdapter.replaceImages(images!!)
-        })
+    private val imagesObserver = Observer<List<String>> {
+        it?.let { galleryAdapter.replaceImages(it) }
     }
 }

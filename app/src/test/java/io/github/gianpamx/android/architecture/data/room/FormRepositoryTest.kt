@@ -1,21 +1,25 @@
 package io.github.gianpamx.android.architecture.data.room
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.whenever
 import io.github.gianpamx.android.architecture.entity.Form
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(JUnit4::class)
+private const val ANY_NAME = "ANY_NAME"
+private const val ANY_PHONE = "ANY_PHONE"
+
+@RunWith(MockitoJUnitRunner::class)
 class FormRepositoryTest {
 
-    companion object {
-        val ANY_NAME = "ANY_NAME"
-        val ANY_PHONE = "ANY_PHONE"
-    }
-
-    val formDao = mock<FormDao>()
+    @Mock
+    lateinit var formDao: FormDao
 
     lateinit var formRepository: FormRepository
 
@@ -26,30 +30,27 @@ class FormRepositoryTest {
 
     @Test
     fun persistSync() {
-        val success = mock<() -> Unit>()
+        formRepository.persist(Form(ANY_NAME, ANY_PHONE))
 
-        formRepository.persistSync(Form(ANY_NAME, ANY_PHONE), success)
-
-        verify(success, only()).invoke()
+        verify(formDao).insert(any())
     }
 
     @Test
     fun findNotExistingForm() {
-        val success = mock<(form: Form) -> Unit>()
         whenever(formDao.findForm()).thenReturn(null)
 
-        formRepository.findFormSync(success)
+        val form = formRepository.findForm()
 
-        verifyZeroInteractions(success)
+        assertNull(form)
     }
 
     @Test
     fun findExistingForm() {
-        val success = mock<(form: Form) -> Unit>()
-        whenever(formDao.findForm()).thenReturn(FormRoom(ANY_NAME, ANY_PHONE))
+        val expectedForm = FormRoom(ANY_NAME, ANY_PHONE)
+        whenever(formDao.findForm()).thenReturn(expectedForm)
 
-        formRepository.findFormSync(success)
+        val form = formRepository.findForm()
 
-        verify(success, times(1)).invoke(any())
+        assertEquals(expectedForm.toForm(), form)
     }
 }

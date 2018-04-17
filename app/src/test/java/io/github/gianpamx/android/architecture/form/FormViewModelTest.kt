@@ -3,44 +3,47 @@ package io.github.gianpamx.android.architecture.form
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.isNull
 import com.nhaarman.mockito_kotlin.verify
-import io.github.gianpamx.android.architecture.entity.EmptyNameExeption
-import io.github.gianpamx.android.architecture.entity.EmptyPhoneExeption
 import io.github.gianpamx.android.architecture.entity.Form
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
 import io.github.gianpamx.android.architecture.providers.VersionProvider
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
 import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
-import junit.framework.Assert.assertEquals
-import org.junit.Assert.assertFalse
-import org.junit.Assert.assertTrue
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 import java.util.*
 
 
-@RunWith(JUnit4::class)
-class FormViewModelTest {
-    companion object {
-        val FIRST_DATE = Date()
-        val SECOND_DATE = Date(FIRST_DATE.time + 1000)
-        val ANY_NAME = "ANY_NAME"
-        val ANY_PHONE = "ANY_PHONE"
-    }
+private val FIRST_DATE = Date()
+private val SECOND_DATE = Date(FIRST_DATE.time + 1000)
 
+private const val ANY_NAME = "ANY_NAME"
+private const val ANY_PHONE = "ANY_PHONE"
+
+@RunWith(MockitoJUnitRunner::class)
+class FormViewModelTest {
     @Rule
     @JvmField
     val instantExecutor = InstantTaskExecutorRule()
 
-    val dateTimeProvider = mock<DateTimeProvider>()
-    val saveFormUseCase = mock<SaveFormUseCase>()
-    val getFormUseCase = mock<GetFormUseCase>()
-    val versionProvider = mock<VersionProvider>()
+    @Mock
+    lateinit var dateTimeProvider: DateTimeProvider
+
+    @Mock
+    lateinit var saveFormUseCase: SaveFormUseCase
+
+    @Mock
+    lateinit var getFormUseCase: GetFormUseCase
+
+    @Mock
+    lateinit var versionProvider: VersionProvider
 
     lateinit var formViewModel: FormViewModel
 
@@ -86,9 +89,9 @@ class FormViewModelTest {
 
     @Test
     fun existingFormData() {
-        var captor = argumentCaptor<(Form) -> Unit>()
+        val captor = argumentCaptor<(Form) -> Unit>()
 
-        verify(getFormUseCase).execute(captor.capture())
+        verify(getFormUseCase).execute(captor.capture(), isNull())
         captor.firstValue.invoke(Form(ANY_NAME, ANY_PHONE))
 
         assertTrue(formViewModel.isFormSaved.value!!)
@@ -96,7 +99,7 @@ class FormViewModelTest {
 
     @Test
     fun formNotSaved() {
-        verify(getFormUseCase).execute(any())
+        verify(getFormUseCase).execute(any(), isNull())
 
         assertFalse(formViewModel.isFormSaved.value!!)
     }

@@ -19,8 +19,6 @@ class FormModule {
 
 
     @Provides
-    fun provideFormViewModel(activity: FormActivity,
-                             dateTimeProvider: DateTimeProvider,
-                             factory: FormViewModel.Factory) =
+    fun provideFormViewModel(activity: FormActivity, factory: FormViewModel.Factory) =
             ViewModelProviders.of(activity, factory).get(FormViewModel::class.java)
 }

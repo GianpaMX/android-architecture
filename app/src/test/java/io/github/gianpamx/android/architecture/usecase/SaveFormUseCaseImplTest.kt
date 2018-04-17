@@ -1,32 +1,30 @@
 package io.github.gianpamx.android.architecture.usecase
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.verify
 import io.github.gianpamx.android.architecture.data.FormGateway
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(JUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class SaveFormUseCaseImplTest {
-    val formGateway = mock<FormGateway>()
+    @Mock
+    lateinit var formGateway: FormGateway
 
-    lateinit var saveFormUseCase: SaveFormUseCase
+    lateinit var saveFormUseCaseImpl: SaveFormUseCaseImpl
 
     @Before
     fun setUp() {
-        saveFormUseCase = SaveFormUseCaseImpl(formGateway)
+        saveFormUseCaseImpl = SaveFormUseCaseImpl(formGateway)
     }
 
     @Test
-    fun execute() {
-        val callback = mock<() -> Unit>()
-        var captor = argumentCaptor<() -> Unit>()
+    fun saveFormSuccessfully() {
+        saveFormUseCaseImpl.executeSync("ANY_NAME", "ANY_PHONE")
 
-        saveFormUseCase.execute("ANY_NAME", "ANY_PHONE", callback, mock())
-
-        verify(formGateway).persist(any(), captor.capture())
-        captor.firstValue.invoke()
-        verify(callback, times(1)).invoke()
+        verify(formGateway).persist(any())
     }
 }

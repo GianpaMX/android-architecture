@@ -3,9 +3,9 @@ package io.github.gianpamx.android.architecture.providers
 import android.os.Handler
 import java.util.*
 
-class AndroidDateTimeProvider : DateTimeProvider {
-    private val ONE_SECOND: Long = 1000
+private const val ONE_SECOND: Long = 1000
 
+class AndroidDateTimeProvider : DateTimeProvider {
     private var handler: Handler? = null
 
     private var isTickerActive: Boolean = false

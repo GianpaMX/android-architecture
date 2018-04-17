@@ -1,19 +1,19 @@
 package io.github.gianpamx.android.architecture.data.retrofit
 
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
 import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 import retrofit2.mock.Calls
 
-@RunWith(JUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class RetrofitImagesTest {
-    val imgurService = mock<ImgurService>()
+    @Mock
+    lateinit var imgurService: ImgurService
 
     lateinit var retrofitImages: RetrofitImages
 
@@ -25,10 +25,9 @@ class RetrofitImagesTest {
     @Test
     fun getAlbum() {
         whenever(imgurService.album(anyString())).thenReturn(Calls.response(AlbumDataModel()))
-        val success = mock<(images: List<String>) -> Unit>()
 
-        retrofitImages.getAlbum("ANY_ALBUM", success)
+        val album = retrofitImages.getAlbum("ANY_ALBUM")
 
-        verify(success).invoke(eq(emptyList()))
+        assertEquals(emptyList<String>(), album)
     }
 }

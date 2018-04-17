@@ -2,6 +2,8 @@ package io.github.gianpamx.android.architecture.data
 
 import dagger.Module
 import dagger.Provides
+import io.github.gianpamx.android.architecture.data.room.FormDao
+import io.github.gianpamx.android.architecture.data.room.FormRepository
 import org.mockito.Mockito.mock
 import javax.inject.Singleton
 
@@ -9,9 +11,13 @@ import javax.inject.Singleton
 class MockModule {
     @Provides
     @Singleton
-    fun provideFormGateway(): FormGateway {
-        return mock(FormGateway::class.java)
+    fun providesFormDao(): FormDao {
+        return mock(FormDao::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideFormGateway(formDao: FormDao): FormGateway = FormRepository(formDao)
 
     @Provides
     @Singleton

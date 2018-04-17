@@ -16,7 +16,7 @@ class RetrofitModule {
 
     @Provides
     @Singleton
-    fun provideImgurService(retrofit: Retrofit) = retrofit.create<ImgurService>(ImgurService::class.java!!)
+    fun provideImgurService(retrofit: Retrofit) = retrofit.create<ImgurService>(ImgurService::class.java)
 
     @Provides
     @Singleton

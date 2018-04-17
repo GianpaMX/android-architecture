@@ -1,36 +1,34 @@
 package io.github.gianpamx.android.architecture.usecase
 
-import com.nhaarman.mockito_kotlin.*
+import com.nhaarman.mockito_kotlin.whenever
 import io.github.gianpamx.android.architecture.data.ImagesGateway
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.mockito.ArgumentMatchers.anyString
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(JUnit4::class)
+@RunWith(MockitoJUnitRunner::class)
 class GetImagesUseCaseImplTest {
-    companion object {
-        val EXPECTED_IMAGES = emptyList<String>()
-    }
+    @Mock
+    lateinit var imagesGateway: ImagesGateway
 
-    val imagesGateway = mock<ImagesGateway>()
-
-    lateinit var getImagesUseCase: GetImagesUseCase
+    lateinit var getImagesUseCaseImpl: GetImagesUseCaseImpl
 
     @Before
     fun setUp() {
-        getImagesUseCase = GetImagesUseCaseImpl(imagesGateway)
+        getImagesUseCaseImpl = GetImagesUseCaseImpl(imagesGateway)
     }
 
     @Test
-    fun execute() {
-        val callback = mock<(images: List<String>) -> Unit>()
-        val captor = argumentCaptor<(images: List<String>) -> Unit>()
+    fun getImagesSuccessfully() {
+        val expectedImages = listOf("ANY_IMAGE_1", "ANY_IMAGE_2")
+        whenever(imagesGateway.getAlbum(anyString())).thenReturn(expectedImages)
 
-        getImagesUseCase.execute(callback)
+        val images = getImagesUseCaseImpl.executeSync()
 
-        verify(imagesGateway).getAlbum(any(), captor.capture())
-        captor.firstValue.invoke(EXPECTED_IMAGES)
-        verify(callback).invoke(eq(EXPECTED_IMAGES))
+        assertEquals(expectedImages, images)
     }
 }

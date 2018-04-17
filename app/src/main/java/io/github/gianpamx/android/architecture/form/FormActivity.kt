@@ -6,11 +6,12 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.format.DateFormat
 import dagger.android.AndroidInjection
-import io.github.gianpamx.android.architecture.entity.EmptyNameExeption
-import io.github.gianpamx.android.architecture.entity.EmptyPhoneExeption
+import io.github.gianpamx.android.architecture.entity.EmptyNameException
+import io.github.gianpamx.android.architecture.entity.EmptyPhoneException
 import io.github.gianpamx.android.architecture.gallery.GalleryActivity
 import io.github.gianpamx.androidarchitecture.R
 import kotlinx.android.synthetic.main.form_activity.*
+import java.util.*
 import javax.inject.Inject
 
 class FormActivity : AppCompatActivity() {
@@ -19,7 +20,7 @@ class FormActivity : AppCompatActivity() {
     lateinit var formViewModel: FormViewModel;
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        AndroidInjection.inject(this);
+        AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.form_activity)
@@ -28,29 +29,36 @@ class FormActivity : AppCompatActivity() {
             formViewModel.send(nameEditText.text.toString(), phoneEditText.text.toString())
         }
 
-        formViewModel.isFormSaved.observe(this, Observer { isFormSaved ->
-            if (isFormSaved!!) {
+        formViewModel.isFormSaved.observe(this, formSavedObserver)
+        formViewModel.dateTime.observe(this, dateObserver)
+        formViewModel.appVersion.observe(this, appVersionObserver)
+        formViewModel.error.observe(this, errorObserver)
+    }
+
+    private val formSavedObserver = Observer<Boolean> { isFormSaved ->
+        isFormSaved?.let {
+            if (it) {
                 finish()
                 startActivity(Intent(this, GalleryActivity::class.java))
             }
-        })
+        }
+    }
 
-        formViewModel.dateTime.observe(this, Observer { date ->
-            dateTimeTextView.text = DateFormat.format(getString(R.string.form_date_format), date)
-        })
+    private val dateObserver = Observer<Date> { date ->
+        dateTimeTextView.text = DateFormat.format(getString(R.string.form_date_format), date)
+    }
 
-        formViewModel.appVersion.observe(this, Observer { appVersion ->
-            versionTextView.text = getString(R.string.form_version, appVersion)
-        })
+    private val appVersionObserver = Observer<String> { appVersion ->
+        versionTextView.text = getString(R.string.form_version, appVersion)
+    }
 
-        formViewModel.error.observe(this, Observer {
-            if (it is EmptyNameExeption) {
-                nameEditText.error = getString(R.string.form_empty_error)
-            }
+    private val errorObserver = Observer<Throwable> {
+        if (it is EmptyNameException) {
+            nameEditText.error = getString(R.string.form_empty_error)
+        }
 
-            if (it is EmptyPhoneExeption) {
-                phoneEditText.error = getString(R.string.form_empty_error)
-            }
-        })
+        if (it is EmptyPhoneException) {
+            phoneEditText.error = getString(R.string.form_empty_error)
+        }
     }
 }

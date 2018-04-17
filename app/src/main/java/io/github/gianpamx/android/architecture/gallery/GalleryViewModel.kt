@@ -25,6 +25,7 @@ class GalleryViewModel(
         })
     }
 
+    @Suppress("UNCHECKED_CAST")
     class Factory(private val getFormUseCase: GetFormUseCase,
                   private val getImagesUseCase: GetImagesUseCase) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T =

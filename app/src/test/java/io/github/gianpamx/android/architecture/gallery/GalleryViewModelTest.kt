@@ -3,7 +3,7 @@ package io.github.gianpamx.android.architecture.gallery
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.argumentCaptor
-import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.isNull
 import com.nhaarman.mockito_kotlin.verify
 import io.github.gianpamx.android.architecture.entity.Form
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
@@ -13,24 +13,27 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.junit.runners.JUnit4
+import org.mockito.Mock
+import org.mockito.junit.MockitoJUnitRunner
 
 
-@RunWith(JUnit4::class)
+private const val EXPECTED_NAME = "EXPECTED_NAME"
+private const val ANY_STRING = "ANY_STRING"
+
+private val EXPECTED_IMAGES = emptyList<String>()
+
+@RunWith(MockitoJUnitRunner::class)
 class GalleryViewModelTest {
-
-    companion object {
-        val EXPECTED_NAME = "EXPECTED_NAME"
-        val ANY_STRING = "ANY_STRING"
-        val EXPECTED_IMAGES = emptyList<String>()
-    }
 
     @Rule
     @JvmField
     val instantExecutor = InstantTaskExecutorRule()
 
-    val getFormUseCase = mock<GetFormUseCase>()
-    val getImagesUseCase = mock<GetImagesUseCase>()
+    @Mock
+    lateinit var getFormUseCase: GetFormUseCase
+
+    @Mock
+    lateinit var getImagesUseCase: GetImagesUseCase
 
     lateinit var galleryViewModel: GalleryViewModel
 
@@ -43,14 +46,14 @@ class GalleryViewModelTest {
     fun greetingName() {
         val captor = argumentCaptor<(form: Form) -> Unit>()
 
-        verify(getFormUseCase).execute(captor.capture())
+        verify(getFormUseCase).execute(captor.capture(), isNull())
         captor.firstValue.invoke(Form(EXPECTED_NAME, ANY_STRING))
         assertEquals(EXPECTED_NAME, galleryViewModel.name.value)
     }
 
     @Test
     fun noImages() {
-        verify(getImagesUseCase).execute(any())
+        verify(getImagesUseCase).execute(any(), isNull())
         assertEquals(EXPECTED_IMAGES, galleryViewModel.images.value)
     }
 
@@ -58,7 +61,7 @@ class GalleryViewModelTest {
     fun images() {
         val captor = argumentCaptor<(images: List<String>) -> Unit>()
 
-        verify(getImagesUseCase).execute(captor.capture())
+        verify(getImagesUseCase).execute(captor.capture(), isNull())
         captor.firstValue.invoke(EXPECTED_IMAGES)
         assertEquals(EXPECTED_IMAGES, galleryViewModel.images.value)
     }
