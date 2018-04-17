@@ -8,10 +8,9 @@ jdk:
   - oraclejdk8
 
 before_install:
-  - sdkmanager --list
   - echo yes | sdkmanager "tools" &>/dev/null
-  - echo yes | sdkmanager "system-images;android-19;default;armeabi-v7a"
-  - echo no | avdmanager create avd --force -n test -k "system-images;android-19;default;armeabi-v7a"
+  - echo yes | sdkmanager "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - echo no | avdmanager create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
 install:
