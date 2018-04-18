@@ -25,6 +25,7 @@ env:
     - ANDROID_HOME=$HOME/android-sdk
     - ANDROID_SDK_ROOT=$ANDROID_HOME
     - SDKMANAGER=$ANDROID_HOME/tools/bin/sdkmanager
+    - ADVMANAGER=$ANDROID_HOME/tools/bin/avdmanager
     - ADB=$ANDROID_HOME/platform-tools/adb
 
 before_install:
@@ -35,7 +36,7 @@ before_install:
 
   - echo yes | $SDKMANAGER "tools" &>/dev/null
   - echo yes | $SDKMANAGER "system-images;android-19;default;armeabi-v7a" &>/dev/null
-  - echo no  | $SDKMANAGER create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - echo no  | $ADVMANAGER create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
 
 install:
