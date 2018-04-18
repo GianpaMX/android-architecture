@@ -24,10 +24,9 @@ env:
   global:
     - ANDROID_HOME=$HOME/android-sdk
     - ANDROID_SDK_ROOT=$ANDROID_HOME
-    - SDKMANAGER=$ANDROID_HOME/tools/bin/sdkmanager
-    - ADVMANAGER=$ANDROID_HOME/tools/bin/avdmanager
-    - ADB=$ANDROID_HOME/platform-tools/adb
     - PATH=$ANDROID_HOME/tools/bin:$PATH
+    - PATH=$ANDROID_HOME/platform-tools:$PATH
+    - PATH=$ANDROID_HOME/emulator:$PATH
 
 install:
   # Download and unzip the Android SDK tools (if not already there thanks to the cache mechanism)
@@ -35,14 +34,14 @@ install:
   - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
   - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
 
-  - echo yes | $SDKMANAGER "tools" &>/dev/null
-  - echo yes | $SDKMANAGER "platform-tools" &>/dev/null
-  - echo yes | $SDKMANAGER "build-tools;27.0.2" &>/dev/null
-  - echo yes | $SDKMANAGER "platforms;android-27" &>/dev/null
-  - echo yes | $SDKMANAGER "system-images;android-19;default;armeabi-v7a" &>/dev/null
-  - echo yes | $SDKMANAGER "emulator" &>/dev/null
-  - echo no  | $ADVMANAGER create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
-  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
+  - echo yes | sdkmanager "tools" &>/dev/null
+  - echo yes | sdkmanager "platform-tools" &>/dev/null
+  - echo yes | sdkmanager "build-tools;27.0.2" &>/dev/null
+  - echo yes | sdkmanager "platforms;android-27" &>/dev/null
+  - echo yes | sdkmanager "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - echo yes | sdkmanager "emulator" &>/dev/null
+  - echo no  | avdmanager create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - emulator -avd test -no-audio -no-window &
 
 before_script:
   - ./gradlew :app:assembleDebug :app:assembleAndroidTest
