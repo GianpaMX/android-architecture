@@ -12,9 +12,7 @@ class GetFormUseCaseImpl(private val formGateway: FormGateway) : GetFormUseCase 
     override fun execute(success: ((Form) -> Unit)?, failure: ((Throwable) -> Unit)?) {
         thread {
             try {
-                executeSync()?.let {
-                    success?.invoke(it)
-                }
+                executeSync()?.let { success?.invoke(it) }
             } catch (t: Throwable) {
                 failure?.invoke(t)
             }
