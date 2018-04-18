@@ -1,30 +1,51 @@
 language: android
-android:
-  components:
-    - tools
-    - platform-tools
-
 jdk:
   - oraclejdk8
 
+before_cache:
+  # Do not cache a few Gradle files/directories (see https://docs.travis-ci.com/user/languages/java/#Caching)
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    # Android SDK
+    - $HOME/android-sdk-dl
+    - $HOME/android-sdk
+
+    # Gradle dependencies
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+    # Android build cache (see http://tools.android.com/tech-docs/build-cache)
+    - $HOME/.android/build-cache
+
+env:
+  - ANDROID_HOME=$HOME/android-sdk
+
 before_install:
-  - echo yes | sdkmanager "tools" &>/dev/null
-  - echo yes | sdkmanager "system-images;android-19;default;armeabi-v7a" &>/dev/null
-  - echo no | avdmanager create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
-  - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window &
+  # Download and unzip the Android SDK tools (if not already there thanks to the cache mechanism)
+  # Latest version available here: https://developer.android.com/studio/index.html#downloads
+  - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
+  - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
+
+  - echo yes | $HOME/android-sdk/tools/bin/sdkmanager "tools" &>/dev/null
+  - echo yes | $HOME/android-sdk/tools/bin/sdkmanager "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - echo no  | $HOME/android-sdk/tools/bin/avdmanager create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - $HOME/android-sdk/emulator/emulator -avd test -no-audio -no-window &
 
 install:
-  - echo yes | sdkmanager "platform-tools" &>/dev/null
-  - echo yes | sdkmanager "build-tools;27.0.2" &>/dev/null
-  - echo yes | sdkmanager "platforms;android-27" &>/dev/null
+  - echo yes | $HOME/android-sdk/tools/bin/sdkmanager "platform-tools" &>/dev/null
+  - echo yes | $HOME/android-sdk/tools/bin/sdkmanager "build-tools;27.0.2" &>/dev/null
+  - echo yes | $HOME/android-sdk/tools/bin/sdkmanager "platforms;android-27" &>/dev/null
 
 before_script:
   - ./gradlew :app:assembleDebug :app:assembleAndroidTest
-  - android-wait-for-emulator
-  - adb shell settings put global window_animation_scale 0 &
-  - adb shell settings put global transition_animation_scale 0 &
-  - adb shell settings put global animator_duration_scale 0 &
-  - adb shell input keyevent 82
+  - ./android-wait-for-emulator
+  - $HOME/android-sdk/platform-tools/adb shell settings put global window_animation_scale 0 &
+  - $HOME/android-sdk/platform-tools/adb shell settings put global transition_animation_scale 0 &
+  - $HOME/android-sdk/platform-tools/adb shell settings put global animator_duration_scale 0 &
+  - $HOME/android-sdk/platform-tools/adb shell input keyevent 82
 
 script:
   - ./gradlew fullCoverageReport
@@ -33,13 +54,3 @@ after_success:
 - bash <(curl -s https://codecov.io/bash) -f ./app/build/reports/jacoco/fullCoverageReport/fullCoverageReport.xml
 
 sudo: false
-
-before_cache:
-  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
-  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
-
-cache:
-  directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
-    - $HOME/.android/build-cache
