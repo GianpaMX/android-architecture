@@ -34,15 +34,15 @@ before_install:
   - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
   - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
 
-  - echo yes | $SDKMANAGER "tools" &>/dev/null
-  - echo yes | $SDKMANAGER "system-images;android-19;default;armeabi-v7a" &>/dev/null
-  - echo no  | $ADVMANAGER create avd --force -n test -k "system-images;android-19;default;armeabi-v7a" &>/dev/null
+  - echo yes | $SDKMANAGER "tools"
+  - echo yes | $SDKMANAGER "system-images;android-19;default;armeabi-v7a"
+  - echo no  | $ADVMANAGER create avd --force -n test -k "system-images;android-19;default;armeabi-v7a"
   - $ANDROID_HOME/emulator/emulator -avd test -no-audio -no-window
 
 install:
-  - echo yes | $SDKMANAGER "platform-tools" &>/dev/null
-  - echo yes | $SDKMANAGER "build-tools;27.0.2" &>/dev/null
-  - echo yes | $SDKMANAGER "platforms;android-27" &>/dev/null
+  - echo yes | $SDKMANAGER "platform-tools"
+  - echo yes | $SDKMANAGER "build-tools;27.0.2"
+  - echo yes | $SDKMANAGER "platforms;android-27"
 
 before_script:
   - ./gradlew :app:assembleDebug :app:assembleAndroidTest
