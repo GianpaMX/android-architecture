@@ -27,6 +27,7 @@ env:
     - SDKMANAGER=$ANDROID_HOME/tools/bin/sdkmanager
     - ADVMANAGER=$ANDROID_HOME/tools/bin/avdmanager
     - ADB=$ANDROID_HOME/platform-tools/adb
+    - PATH=$ANDROID_HOME/tools/bin:$PATH
 
 before_install:
   # Download and unzip the Android SDK tools (if not already there thanks to the cache mechanism)
