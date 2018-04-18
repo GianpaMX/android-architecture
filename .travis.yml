@@ -21,10 +21,11 @@ cache:
     - $HOME/.android/build-cache
 
 env:
-  - ANDROID_HOME=$HOME/android-sdk
-  - ANDROID_SDK_ROOT=$ANDROID_HOME
-  - SDKMANAGER=$ANDROID_HOME/tools/bin/sdkmanager
-  - ADB=$ANDROID_HOME/platform-tools/adb
+  global:
+    - ANDROID_HOME=$HOME/android-sdk
+    - ANDROID_SDK_ROOT=$ANDROID_HOME
+    - SDKMANAGER=$ANDROID_HOME/tools/bin/sdkmanager
+    - ADB=$ANDROID_HOME/platform-tools/adb
 
 before_install:
   # Download and unzip the Android SDK tools (if not already there thanks to the cache mechanism)
