@@ -37,57 +37,60 @@ tasks.withType(Test) {
 }
 
 dependencies {
-    def DAGGER_VERSION = '2.14.1'
-    def ARCH_COMP_VERSION = '1.1.1'
-    def ROOM_VERSION = '1.0.0'
-    def MOCKITO_KOTLIN_VERSION = '1.5.0'
-    def GLIDE_VERSION = '4.6.1'
-    def RETROFIT_VERSION = '2.3.0'
-    def BUILD_TOOLS_VERSION = "27.1.1"
+    def daggerVersion = '2.14.1'
+    def archCompVersion = '1.1.1'
+    def roomVersion = '1.1.0'
+    def mockitoKotlinVersion = '1.5.0'
+    def glideVersion = '4.6.1'
+    def retrofitVersion = '2.3.0'
+    def supportVersion = "27.1.1"
+    def runnerVersion = "1.0.2"
 
-    kapt "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
-    implementation "com.google.dagger:dagger:$DAGGER_VERSION"
-    implementation "com.google.dagger:dagger-android:$DAGGER_VERSION"
-    implementation "com.google.dagger:dagger-android-support:$DAGGER_VERSION"
-    kapt "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    implementation "com.google.dagger:dagger:$daggerVersion"
+    implementation "com.google.dagger:dagger-android:$daggerVersion"
+    implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+    kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
-    implementation "com.android.support:appcompat-v7:$BUILD_TOOLS_VERSION"
-    implementation "com.android.support:design:$BUILD_TOOLS_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlinVersion"
+    implementation "com.android.support:appcompat-v7:$supportVersion"
+    implementation "com.android.support:design:$supportVersion"
 
-    implementation "android.arch.lifecycle:extensions:$ARCH_COMP_VERSION"
-    kapt "android.arch.lifecycle:compiler:$ARCH_COMP_VERSION"
+    implementation "android.arch.lifecycle:extensions:$archCompVersion"
+    kapt "android.arch.lifecycle:compiler:$archCompVersion"
 
-    implementation "android.arch.persistence.room:runtime:$ROOM_VERSION"
-    kapt "android.arch.persistence.room:compiler:$ROOM_VERSION"
+    implementation "android.arch.persistence.room:runtime:$roomVersion"
+    kapt "android.arch.persistence.room:compiler:$roomVersion"
 
-    implementation "com.github.bumptech.glide:glide:$GLIDE_VERSION"
-    kapt "com.github.bumptech.glide:compiler:$GLIDE_VERSION"
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:annotations:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
-    implementation "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
-    implementation "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-gson:$retrofitVersion"
 
     testImplementation "junit:junit:4.12"
-    testImplementation "android.arch.core:core-testing:$ARCH_COMP_VERSION"
-    testImplementation "android.arch.persistence.room:testing:$ROOM_VERSION"
-    testImplementation "com.nhaarman:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
-    testImplementation "com.squareup.retrofit2:retrofit-mock:$RETROFIT_VERSION"
-    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    testImplementation "android.arch.core:core-testing:$archCompVersion"
+    testImplementation "android.arch.persistence.room:testing:$roomVersion"
+    testImplementation "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
+    testImplementation "com.squareup.retrofit2:retrofit-mock:$retrofitVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    testImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
 
 
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    androidTestImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    androidTestImplementation "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
     androidTestImplementation 'org.mockito:mockito-android:2.13.0'
-    androidTestImplementation "com.nhaarman:mockito-kotlin:$MOCKITO_KOTLIN_VERSION"
-    androidTestImplementation "com.android.support.test:runner:1.0.1"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
-    androidTestImplementation "android.arch.core:core-testing:$ARCH_COMP_VERSION"
+    androidTestImplementation "com.nhaarman:mockito-kotlin:$mockitoKotlinVersion"
+    androidTestImplementation "com.android.support.test:rules:$runnerVersion"
+    androidTestImplementation "com.android.support.test:runner:$runnerVersion"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.2"
+    androidTestImplementation "android.arch.core:core-testing:$archCompVersion"
     androidTestImplementation('com.schibsted.spain:barista:2.3.0') {
         exclude group: 'com.android.support'
         exclude group: 'org.jetbrains.kotlin'
     }
-    kaptAndroidTest "com.google.dagger:dagger-android-processor:$DAGGER_VERSION"
+    kaptAndroidTest "com.google.dagger:dagger-android-processor:$daggerVersion"
 }
 
 task fullCoverageReport(type: JacocoReport, dependsOn: ['testDebugUnitTest', 'createDebugCoverageReport']) {

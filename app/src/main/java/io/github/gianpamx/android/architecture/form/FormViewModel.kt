@@ -2,14 +2,14 @@ package io.github.gianpamx.android.architecture.form
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
 import io.github.gianpamx.android.architecture.providers.DateTimeProvider
 import io.github.gianpamx.android.architecture.providers.VersionProvider
 import io.github.gianpamx.android.architecture.usecase.GetFormUseCase
 import io.github.gianpamx.android.architecture.usecase.SaveFormUseCase
 import java.util.*
+import javax.inject.Inject
 
-class FormViewModel(
+class FormViewModel @Inject constructor(
         dateTimeProvider: DateTimeProvider,
         private val saveFormUseCase: SaveFormUseCase,
         private val getFormUseCase: GetFormUseCase,
@@ -41,15 +41,5 @@ class FormViewModel(
                 success = { isFormSaved.postValue(true) },
                 failure = { error.postValue(it) }
         )
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    class Factory(
-            private val dateTimeProvider: DateTimeProvider,
-            private val saveFormUseCase: SaveFormUseCase,
-            private val getFormUseCase: GetFormUseCase,
-            private val versionProvider: VersionProvider) : ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T =
-                FormViewModel(dateTimeProvider, saveFormUseCase, getFormUseCase, versionProvider) as T
     }
 }

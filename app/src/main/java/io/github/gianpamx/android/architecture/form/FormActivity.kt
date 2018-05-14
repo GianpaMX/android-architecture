@@ -1,6 +1,8 @@
 package io.github.gianpamx.android.architecture.form
 
 import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -17,22 +19,25 @@ import javax.inject.Inject
 class FormActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var formViewModel: FormViewModel;
+    lateinit var factory: ViewModelProvider.Factory
+
+    lateinit var viewModel: FormViewModel;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, factory).get(FormViewModel::class.java)
 
         setContentView(R.layout.form_activity)
 
         sendButton.setOnClickListener {
-            formViewModel.send(nameEditText.text.toString(), phoneEditText.text.toString())
+            viewModel.send(nameEditText.text.toString(), phoneEditText.text.toString())
         }
 
-        formViewModel.isFormSaved.observe(this, formSavedObserver)
-        formViewModel.dateTime.observe(this, dateObserver)
-        formViewModel.appVersion.observe(this, appVersionObserver)
-        formViewModel.error.observe(this, errorObserver)
+        viewModel.isFormSaved.observe(this, formSavedObserver)
+        viewModel.dateTime.observe(this, dateObserver)
+        viewModel.appVersion.observe(this, appVersionObserver)
+        viewModel.error.observe(this, errorObserver)
     }
 
     private val formSavedObserver = Observer<Boolean> { isFormSaved ->
